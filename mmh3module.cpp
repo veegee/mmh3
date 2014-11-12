@@ -41,6 +41,13 @@ mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds) {
     int64_t result[2];
     char x64arch = 1;
 
+    #ifdef _MSC_VER
+    const char *format = "LL";
+    #else
+    const char *format = "ll";
+    #endif
+
+
     static char *kwlist[] = {(char *) "key", (char *) "seed", (char *) "x64arch", NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|iB", kwlist,
@@ -54,7 +61,7 @@ mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds) {
         MurmurHash3_x86_128(target_str, target_str_len, seed, result);
     }
 
-    PyObject *retval = Py_BuildValue("ll", result[0], result[1]);
+    PyObject *retval = Py_BuildValue(format, result[0], result[1]);
     return retval;
 }
 
@@ -168,7 +175,7 @@ static struct PyModuleDef mmh3module = {
 
 extern "C" {
     PyMODINIT_FUNC
-    PyInit_mmh3(void) {
+    PyInit_mmh3() {
         PyObject *module = PyModule_Create(&mmh3module);
 
         if (module == NULL)
