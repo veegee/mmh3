@@ -1,29 +1,24 @@
-//-----------------------------------------------------------------------------
-// MurmurHash3 was written by Austin Appleby, and is placed in the public
-// domain. mmh3 Python module was written by Hajime Senuma,
-// and is also placed in the public domain.
-// The authors hereby disclaim copyright to these source codes.
-
 #include <stdio.h>
 #include <string.h>
 #include <Python.h>
-#include "MurmurHash3.h"
+#include "murmur_hash_3.h"
 
 #if defined(_MSC_VER)
 typedef signed char int8_t;
 typedef signed long int32_t;
 typedef signed __int64 int64_t;
+typedef signed _int64 int64_t;
 typedef unsigned char uint8_t;
 typedef unsigned long uint32_t;
 typedef unsigned __int64 uint64_t;
+typedef unsigned _int64 uint64_t;
 // Other compilers
 #else    // defined(_MSC_VER)
 #include <stdint.h>
 #endif // !defined(_MSC_VER)
 
 static PyObject *
-mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
-{
+mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds) {
     const char *target_str;
     int target_str_len;
     uint32_t seed = 0;
@@ -45,8 +40,7 @@ mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
 }
 
 static PyObject *
-mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds)
-{
+mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds) {
     const char *target_str;
     int target_str_len;
     uint32_t seed = 0;
@@ -72,8 +66,7 @@ mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds)
 }
 
 static PyObject *
-mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds)
-{
+mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds) {
     const char *target_str;
     int target_str_len;
     uint32_t seed = 0;
@@ -94,7 +87,7 @@ mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds)
       MurmurHash3_x86_128(target_str, target_str_len, seed, result);
     }
 
-    
+
     /**
      * _PyLong_FromByteArray is not a part of official Python/C API
      * and can be displaced (although it is practically stable). cf.
@@ -105,8 +98,7 @@ mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds)
 }
 
 static PyObject *
-mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds)
-{
+mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds) {
     const char *target_str;
     int target_str_len;
     uint32_t seed = 0;
@@ -135,13 +127,8 @@ mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds)
 struct module_state {
   PyObject *error;
 };
-    
-#if PY_MAJOR_VERSION >= 3
+
 #define GETSTATE(m) ((struct module_state*)PyModule_GetState(m))
-#else
-#define GETSTATE(m) (&_state)
-static struct module_state _state;
-#endif
 
 static PyMethodDef Mmh3Methods[] = {
     {"hash", (PyCFunction)mmh3_hash, METH_VARARGS | METH_KEYWORDS,
@@ -155,8 +142,6 @@ static PyMethodDef Mmh3Methods[] = {
         "hash_bytes(key[, seed=0, x64arch=True]) -> bytes\n Return a 128 bit hash value as bytes for a string. Optimized for the x64 bit architecture when x64arch=True, otherwise for the x86."},
     {NULL, NULL, 0, NULL}
 };
-
-#if PY_MAJOR_VERSION >= 3
 
 static int mmh3_traverse(PyObject *m, visitproc visit, void *arg) {
     Py_VISIT(GETSTATE(m)->error);
@@ -184,22 +169,8 @@ static struct PyModuleDef mmh3module = {
 
 extern "C" {
 PyMODINIT_FUNC
-PyInit_mmh3(void)
-
-#else // PY_MAJOR_VERSION >= 3
-#define INITERROR return
-
-extern "C" {
-void
-initmmh3(void)
-#endif // PY_MAJOR_VERSION >= 3
-
-{
-#if PY_MAJOR_VERSION >= 3
+PyInit_mmh3(void) {
     PyObject *module = PyModule_Create(&mmh3module);
-#else
-    PyObject *module = Py_InitModule("mmh3", Mmh3Methods);
-#endif
 
     if (module == NULL)
         INITERROR;
@@ -214,8 +185,6 @@ initmmh3(void)
         INITERROR;
     }
 
-#if PY_MAJOR_VERSION >= 3
     return module;
-#endif
 }
-} // extern "C"
+}
