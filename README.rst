@@ -15,7 +15,11 @@ Supports Python >= 3.2.0 on all platforms.
 Usage
 =====
 
-Sample Usage::
+Install::
+
+    pip install murmurhash3
+
+Usage::
 
     pip install murmurhash3
 
