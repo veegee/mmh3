@@ -149,7 +149,7 @@ static int mmh3_clear(PyObject *m) {
 static struct PyModuleDef mmh3module = {
     PyModuleDef_HEAD_INIT,
     "mmh3",
-    "mmh3 is a Python frontend to MurmurHash3, a fast and robust hash library created by Austin Appleby (http://code.google.com/p/smhasher/).\n Ported by Hajime Senuma <hajime.senuma@gmail.com>\n Try hash('foobar') or hash('foobar', 1984).",
+    "mmh3 is a Python frontend to MurmurHash3, a fast and robust hash library.\n",
     sizeof(struct module_state),
     Mmh3Methods,
     NULL,

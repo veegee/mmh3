@@ -1,49 +1,34 @@
-//-----------------------------------------------------------------------------
-// MurmurHash3 was written by Austin Appleby, and is placed in the public
-// domain. The author hereby disclaims copyright to this source code.
-
-// Note - The x86 and x64 versions do _not_ produce the same results, as the
-// algorithms are optimized for their respective platforms. You can still
-// compile and run any of them on any platform, but your performance with the
-// non-native version will be less than optimal.
+/* Note - The x86 and x64 versions do _not_ produce the same results, as the
+ * algorithms are optimized for their respective platforms. You can still
+ * compile and run any of them on any platform, but your performance with the
+ * non-native version will be less than optimal.
+ */
 
 #include "murmur_hash_3.h"
-
-//-----------------------------------------------------------------------------
-// Platform-specific functions and macros
-
-// Microsoft Visual Studio
 
 #if defined(_MSC_VER)
 
 #define FORCE_INLINE	__forceinline
-
 #include <stdlib.h>
-
 #define ROTL32(x,y)	_rotl(x,y)
 #define ROTL64(x,y)	_rotl64(x,y)
-
 #define BIG_CONSTANT(x) (x)
 
-// Other compilers
-
-#else	// defined(_MSC_VER)
+#else
 
 #if defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && GNUC_MINOR >= 4))
-/* gcc version >= 4.4 4.1 = RHEL 5, 4.4 = RHEL 6. Don't inline for RHEL 5 gcc which is 4.1*/
+// gcc version >= 4.4 4.1 = RHEL 5, 4.4 = RHEL 6. Don't inline for RHEL 5 gcc which is 4.1
 #define FORCE_INLINE attribute((always_inline))
 #else
 #define FORCE_INLINE
 #endif
 
-inline uint32_t rotl32 ( uint32_t x, int8_t r )
-{
-  return (x << r) | (x >> (32 - r));
+inline uint32_t rotl32(uint32_t x, int8_t r) {
+    return (x << r) | (x >> (32 - r));
 }
 
-inline uint64_t rotl64 ( uint64_t x, int8_t r )
-{
-  return (x << r) | (x >> (64 - r));
+inline uint64_t rotl64(uint64_t x, int8_t r) {
+    return (x << r) | (x >> (64 - r));
 }
 
 #define	ROTL32(x,y)	rotl32(x,y)
@@ -51,47 +36,41 @@ inline uint64_t rotl64 ( uint64_t x, int8_t r )
 
 #define BIG_CONSTANT(x) (x##LLU)
 
-#endif // !defined(_MSC_VER)
+#endif // if defined(_MSC_VER)
 
 //-----------------------------------------------------------------------------
 // Block read - if your platform needs to do endian-swapping or can only
 // handle aligned reads, do the conversion here
 
-FORCE_INLINE uint32_t getblock ( const uint32_t * p, int i )
-{
-  return p[i];
+FORCE_INLINE uint32_t getblock(const uint32_t * p, int i) {
+    return p[i];
 }
 
-FORCE_INLINE uint64_t getblock ( const uint64_t * p, int i )
-{
-  return p[i];
+FORCE_INLINE uint64_t getblock(const uint64_t * p, int i) {
+    return p[i];
 }
 
 //-----------------------------------------------------------------------------
 // Finalization mix - force all bits of a hash block to avalanche
 
-FORCE_INLINE uint32_t fmix ( uint32_t h )
-{
-  h ^= h >> 16;
-  h *= 0x85ebca6b;
-  h ^= h >> 13;
-  h *= 0xc2b2ae35;
-  h ^= h >> 16;
+FORCE_INLINE uint32_t fmix(uint32_t h) {
+    h ^= h >> 16;
+    h *= 0x85ebca6b;
+    h ^= h >> 13;
+    h *= 0xc2b2ae35;
+    h ^= h >> 16;
 
-  return h;
+    return h;
 }
 
-//----------
+FORCE_INLINE uint64_t fmix(uint64_t k) {
+    k ^= k >> 33;
+    k *= BIG_CONSTANT(0xff51afd7ed558ccd);
+    k ^= k >> 33;
+    k *= BIG_CONSTANT(0xc4ceb9fe1a85ec53);
+    k ^= k >> 33;
 
-FORCE_INLINE uint64_t fmix ( uint64_t k )
-{
-  k ^= k >> 33;
-  k *= BIG_CONSTANT(0xff51afd7ed558ccd);
-  k ^= k >> 33;
-  k *= BIG_CONSTANT(0xc4ceb9fe1a85ec53);
-  k ^= k >> 33;
-
-  return k;
+    return k;
 }
 
 //-----------------------------------------------------------------------------
