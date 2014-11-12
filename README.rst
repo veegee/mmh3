@@ -1,14 +1,23 @@
-mmh3
-====
+murmurhash3
+===========
 
-Python wrapper for MurmurHash (MurmurHash3), a set of fast and robust hash functions.
+:Version: 2.3.1
+:Download: http://pypi.python.org/pypi/murmurhash3/
+:Source: http://github.com/veegee/mmh3
+:Keywords: hash, MurmurHash
 
-Supports Python >= 3.2.0
+murmurhash3 is a Python library for MurmurHash (MurmurHash3), a set of fast and
+robust hash functions. This library is a Python extension module written in C.
+
+Supports Python >= 3.2.0 on all platforms.
+
 
 Usage
------
+=====
 
 Sample Usage::
+
+    pip install murmurhash3
 
     >>> import mmh3
     >>> mmh3.hash('foo')  # 32-bit signed int
@@ -22,7 +31,8 @@ Sample Usage::
     >>> mmh3.hash('foo', 42)  # uses 42 for its seed
     -1322301282
 
-``hash64``, ``hash128``, and ``hash_bytes`` have the third argument for architecture optimization. Use True for x64 and False for x86 (default: True).::
+``hash64``, ``hash128``, and ``hash_bytes`` have the third argument for
+architecture optimization. Use True for x64 and False for x86 (default: True).::
 
     >>> mmh3.hash64('foo', 42, True)
     (-840311307571801102, -6739155424061121879)
