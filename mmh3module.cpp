@@ -47,7 +47,6 @@ mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds) {
     const char *format = "ll";
     #endif
 
-
     static char *kwlist[] = {(char *) "key", (char *) "seed", (char *) "x64arch", NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|iB", kwlist,
