@@ -11,15 +11,15 @@ classifiers = [
     'Topic :: Utilities'
 ]
 
-setup(name = 'mmh3',
+setup(name = 'murmurhash3',
     version = '2.3.1',
-    description = 'Python library for MurmurHash3, a set of fast and robust hash functions',
+    description = 'a library for MurmurHash3, a set of fast and robust hash functions',
     license = 'Public Domain',
     author = 'V G',
     author_email = 'veegee@veegee.org',
     url = 'http://packages.python.org/murmurhash3',
     ext_modules = [mmh3module],
-    keywords = "hash MurmurHash",
+    keywords = ['hash', 'MurmurHash'],
     long_description = open('README.rst').read(),
     classifiers = classifiers
 )
