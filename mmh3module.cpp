@@ -4,15 +4,15 @@
 #include "murmur_hash_3.h"
 
 #if defined(_MSC_VER)
-    // Visual C++
-    typedef signed char int8_t;
-    typedef signed long int32_t;
-    typedef signed __int64 int64_t;
-    typedef unsigned char uint8_t;
-    typedef unsigned long uint32_t;
-    typedef unsigned __int64 uint64_t;
+// Visual C++
+typedef signed char int8_t;
+typedef signed long int32_t;
+typedef signed __int64 int64_t;
+typedef unsigned char uint8_t;
+typedef unsigned long uint32_t;
+typedef unsigned __int64 uint64_t;
 #else
-    #include <stdint.h>
+#include <stdint.h>
 #endif
 
 static PyObject *
@@ -25,7 +25,7 @@ mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds) {
     static char *kwlist[] = {(char *) "key", (char *) "seed", NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|i", kwlist,
-        &target_str, &target_str_len, &seed)) {
+                                     &target_str, &target_str_len, &seed)) {
         return NULL;
     }
 
@@ -44,14 +44,14 @@ mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds) {
     static char *kwlist[] = {(char *) "key", (char *) "seed", (char *) "x64arch", NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|iB", kwlist,
-        &target_str, &target_str_len, &seed, &x64arch)) {
+                                     &target_str, &target_str_len, &seed, &x64arch)) {
         return NULL;
     }
 
     if (x64arch == 1) {
-      MurmurHash3_x64_128(target_str, target_str_len, seed, result);
+        MurmurHash3_x64_128(target_str, target_str_len, seed, result);
     } else {
-      MurmurHash3_x86_128(target_str, target_str_len, seed, result);
+        MurmurHash3_x86_128(target_str, target_str_len, seed, result);
     }
 
     PyObject *retval = Py_BuildValue("ll", result[0], result[1]);
@@ -69,14 +69,14 @@ mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds) {
     static char *kwlist[] = {(char *) "key", (char *) "seed", (char *) "x64arch", NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|iB", kwlist,
-        &target_str, &target_str_len, &seed, &x64arch)) {
+                                     &target_str, &target_str_len, &seed, &x64arch)) {
         return NULL;
     }
 
     if (x64arch == 1) {
-      MurmurHash3_x64_128(target_str, target_str_len, seed, result);
+        MurmurHash3_x64_128(target_str, target_str_len, seed, result);
     } else {
-      MurmurHash3_x86_128(target_str, target_str_len, seed, result);
+        MurmurHash3_x86_128(target_str, target_str_len, seed, result);
     }
 
 
@@ -96,14 +96,14 @@ mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds) {
     static char *kwlist[] = {(char *) "key", (char *) "seed", (char *) "x64arch", NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|iB", kwlist,
-            &target_str, &target_str_len, &seed, &x64arch)) {
+                                     &target_str, &target_str_len, &seed, &x64arch)) {
         return NULL;
     }
 
     if (x64arch == 1) {
-      MurmurHash3_x64_128(target_str, target_str_len, seed, result);
+        MurmurHash3_x64_128(target_str, target_str_len, seed, result);
     } else {
-      MurmurHash3_x86_128(target_str, target_str_len, seed, result);
+        MurmurHash3_x86_128(target_str, target_str_len, seed, result);
     }
 
     char bytes[16];
@@ -112,27 +112,35 @@ mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds) {
 }
 
 struct module_state {
-  PyObject *error;
+    PyObject *error;
 };
 
 #define GETSTATE(m) ((struct module_state*)PyModule_GetState(m))
 
 static PyMethodDef Mmh3Methods[] = {
-    {"hash", (PyCFunction)mmh3_hash, METH_VARARGS | METH_KEYWORDS,
-        "hash(key, seed=0) -> hash value\n Return a 32 bit integer."},
-    {"hash64", (PyCFunction)mmh3_hash64, METH_VARARGS | METH_KEYWORDS,
+    {
+        "hash", (PyCFunction)mmh3_hash, METH_VARARGS | METH_KEYWORDS,
+        "hash(key, seed=0) -> hash value\n Return a 32 bit integer."
+    },
+    {
+        "hash64", (PyCFunction)mmh3_hash64, METH_VARARGS | METH_KEYWORDS,
         "hash64(key, seed=0, x64arch=True) -> (hash value 1, hash value 2)\n"
         "Return a tuple of two 64 bit integers for a string\n\n"
-        "Optimized for the x64 bit architecture when x64arch=True, otherwise for x86."},
-    {"hash128", (PyCFunction)mmh3_hash128, METH_VARARGS | METH_KEYWORDS,
+        "Optimized for the x64 bit architecture when x64arch=True, otherwise for x86."
+    },
+    {
+        "hash128", (PyCFunction)mmh3_hash128, METH_VARARGS | METH_KEYWORDS,
         "hash128(key, seed=0, x64arch=True) -> hash value\n"
         "Return a 128 bit long integer\n\n"
-        "Optimized for the x64 bit architecture when x64arch=True, otherwise for x86."},
-    {"hash_bytes", (PyCFunction)mmh3_hash_bytes,
-      METH_VARARGS | METH_KEYWORDS,
+        "Optimized for the x64 bit architecture when x64arch=True, otherwise for x86."
+    },
+    {
+        "hash_bytes", (PyCFunction)mmh3_hash_bytes,
+        METH_VARARGS | METH_KEYWORDS,
         "hash_bytes(key, seed=0, x64arch=True) -> bytes\n"
         "Return a 128 bit hash value as bytes for a string\n\n"
-        "Optimized for the x64 bit architecture when x64arch=True, otherwise for the x86."},
+        "Optimized for the x64 bit architecture when x64arch=True, otherwise for the x86."
+    },
     {NULL, NULL, 0, NULL}
 };
 
@@ -159,23 +167,23 @@ static struct PyModuleDef mmh3module = {
 };
 
 extern "C" {
-PyMODINIT_FUNC
-PyInit_mmh3(void) {
-    PyObject *module = PyModule_Create(&mmh3module);
+    PyMODINIT_FUNC
+    PyInit_mmh3(void) {
+        PyObject *module = PyModule_Create(&mmh3module);
 
-    if (module == NULL)
-        return NULL;
+        if (module == NULL)
+            return NULL;
 
-    PyModule_AddStringConstant(module, "__version__", "2.3");
+        PyModule_AddStringConstant(module, "__version__", "2.3");
 
-    struct module_state *st = GETSTATE(module);
+        struct module_state *st = GETSTATE(module);
 
-    st->error = PyErr_NewException((char *) "mmh3.Error", NULL, NULL);
-    if (st->error == NULL) {
-        Py_DECREF(module);
-        return NULL;
+        st->error = PyErr_NewException((char *) "mmh3.Error", NULL, NULL);
+        if (st->error == NULL) {
+            Py_DECREF(module);
+            return NULL;
+        }
+
+        return module;
     }
-
-    return module;
-}
 }
