@@ -172,24 +172,22 @@ static struct PyModuleDef mmh3module = {
     NULL
 };
 
-extern "C" {
-    PyMODINIT_FUNC
-    PyInit_mmh3() {
-        PyObject *module = PyModule_Create(&mmh3module);
+PyMODINIT_FUNC
+PyInit_mmh3(void) {
+    PyObject *module = PyModule_Create(&mmh3module);
 
-        if (module == NULL)
-            return NULL;
+    if (module == NULL)
+        return NULL;
 
-        PyModule_AddStringConstant(module, "__version__", "2.3");
+    PyModule_AddStringConstant(module, "__version__", "2.3");
 
-        struct module_state *st = GETSTATE(module);
+    struct module_state *st = GETSTATE(module);
 
-        st->error = PyErr_NewException((char *)"mmh3.Error", NULL, NULL);
-        if (st->error == NULL) {
-            Py_DECREF(module);
-            return NULL;
-        }
-
-        return module;
+    st->error = PyErr_NewException((char *)"mmh3.Error", NULL, NULL);
+    if (st->error == NULL) {
+        Py_DECREF(module);
+        return NULL;
     }
+
+    return module;
 }
