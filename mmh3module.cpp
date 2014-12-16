@@ -22,7 +22,7 @@ mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds) {
     uint32_t seed = 0;
     int32_t result[1];
 
-    static char *kwlist[] = {(char *) "key", (char *) "seed", NULL};
+    static char *kwlist[] = {"key", (char *)"seed", NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|i", kwlist,
                                      &target_str, &target_str_len, &seed)) {
@@ -47,7 +47,7 @@ mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds) {
     const char *format = "ll";
     #endif
 
-    static char *kwlist[] = {(char *) "key", (char *) "seed", (char *) "x64arch", NULL};
+    static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"x64arch", NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|iB", kwlist,
                                      &target_str, &target_str_len, &seed, &x64arch)) {
@@ -72,7 +72,7 @@ mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds) {
     uint64_t result[2];
     char x64arch = 1;
 
-    static char *kwlist[] = {(char *) "key", (char *) "seed", (char *) "x64arch", NULL};
+    static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"x64arch", NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|iB", kwlist,
                                      &target_str, &target_str_len, &seed, &x64arch)) {
@@ -99,7 +99,7 @@ mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds) {
     uint32_t result[4];
     char x64arch = 1;
 
-    static char *kwlist[] = {(char *) "key", (char *) "seed", (char *) "x64arch", NULL};
+    static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"x64arch", NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|iB", kwlist,
                                      &target_str, &target_str_len, &seed, &x64arch)) {
@@ -184,7 +184,7 @@ extern "C" {
 
         struct module_state *st = GETSTATE(module);
 
-        st->error = PyErr_NewException((char *) "mmh3.Error", NULL, NULL);
+        st->error = PyErr_NewException((char *)"mmh3.Error", NULL, NULL);
         if (st->error == NULL) {
             Py_DECREF(module);
             return NULL;
