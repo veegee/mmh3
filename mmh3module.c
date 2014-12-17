@@ -39,7 +39,6 @@ mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds) {
     int target_str_len;
     uint32_t seed = 0;
     int64_t result[2];
-    char x64arch = 1;
 
     #ifdef _MSC_VER
     const char *format = "LL";
@@ -47,18 +46,14 @@ mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds) {
     const char *format = "ll";
     #endif
 
-    static char *kwlist[] = {"key", "seed", "x64arch", NULL};
+    static char *kwlist[] = {"key", "seed", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|iB", kwlist,
-                                     &target_str, &target_str_len, &seed, &x64arch)) {
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|i", kwlist,
+                                     &target_str, &target_str_len, &seed)) {
         return NULL;
     }
 
-    if (x64arch == 1) {
-        MurmurHash3_x64_128(target_str, target_str_len, seed, result);
-    } else {
-        MurmurHash3_x86_128(target_str, target_str_len, seed, result);
-    }
+    MurmurHash3_x64_128(target_str, target_str_len, seed, result);
 
     PyObject *retval = Py_BuildValue(format, result[0], result[1]);
     return retval;
@@ -70,23 +65,16 @@ mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds) {
     int target_str_len;
     uint32_t seed = 0;
     uint64_t result[2];
-    char x64arch = 1;
 
-    static char *kwlist[] = {"key", "seed", "x64arch", NULL};
+    static char *kwlist[] = {"key", "seed", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|iB", kwlist,
-                                     &target_str, &target_str_len, &seed, &x64arch)) {
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|i", kwlist,
+                                     &target_str, &target_str_len, &seed)) {
         return NULL;
     }
 
-    if (x64arch == 1) {
-        MurmurHash3_x64_128(target_str, target_str_len, seed, result);
-    } else {
-        MurmurHash3_x86_128(target_str, target_str_len, seed, result);
-    }
+    MurmurHash3_x64_128(target_str, target_str_len, seed, result);
 
-
-    // TODO: use Py_BuildValue instead
     PyObject *retval = _PyLong_FromByteArray((unsigned char *)result, 16, 1, 0);
     return retval;
 }
@@ -97,20 +85,15 @@ mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds) {
     int target_str_len;
     uint32_t seed = 0;
     uint32_t result[4];
-    char x64arch = 1;
 
-    static char *kwlist[] = {"key", "seed", "x64arch", NULL};
+    static char *kwlist[] = {"key", "seed", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|iB", kwlist,
-                                     &target_str, &target_str_len, &seed, &x64arch)) {
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|i", kwlist,
+                                     &target_str, &target_str_len, &seed)) {
         return NULL;
     }
 
-    if (x64arch == 1) {
-        MurmurHash3_x64_128(target_str, target_str_len, seed, result);
-    } else {
-        MurmurHash3_x86_128(target_str, target_str_len, seed, result);
-    }
+    MurmurHash3_x64_128(target_str, target_str_len, seed, result);
 
     char bytes[16];
     memcpy(bytes, result, 16);
@@ -126,26 +109,23 @@ struct module_state {
 static PyMethodDef Mmh3Methods[] = {
     {
         "hash", (PyCFunction)mmh3_hash, METH_VARARGS | METH_KEYWORDS,
-        "hash(key, seed=0) -> hash value\n Return a 32 bit integer."
+        "hash(key, seed=0) -> int32\n"
+        "Return a 32 bit integer hash value."
     },
     {
         "hash64", (PyCFunction)mmh3_hash64, METH_VARARGS | METH_KEYWORDS,
-        "hash64(key, seed=0, x64arch=True) -> (hash value 1, hash value 2)\n"
-        "Return a tuple of two 64 bit integers for a string\n\n"
-        "Optimized for the x64 bit architecture when x64arch=True, otherwise for x86."
+        "hash64(key, seed=0) -> (int64, int64)\n"
+        "Return a tuple of two 64 bit integer hash values for a string."
     },
     {
         "hash128", (PyCFunction)mmh3_hash128, METH_VARARGS | METH_KEYWORDS,
-        "hash128(key, seed=0, x64arch=True) -> hash value\n"
-        "Return a 128 bit long integer\n\n"
-        "Optimized for the x64 bit architecture when x64arch=True, otherwise for x86."
+        "hash128(key, seed=0) -> int128\n"
+        "Return a 128 bit long integer hash value."
     },
     {
-        "hash_bytes", (PyCFunction)mmh3_hash_bytes,
-        METH_VARARGS | METH_KEYWORDS,
+        "hash_bytes", (PyCFunction)mmh3_hash_bytes, METH_VARARGS | METH_KEYWORDS,
         "hash_bytes(key, seed=0, x64arch=True) -> bytes\n"
-        "Return a 128 bit hash value as bytes for a string\n\n"
-        "Optimized for the x64 bit architecture when x64arch=True, otherwise for the x86."
+        "Return a 128 bit hash value as bytes for a string"
     },
     {NULL, NULL, 0, NULL}
 };

@@ -13,7 +13,7 @@ classifiers = [
 ]
 
 setup(name = 'murmurhash3',
-    version = '2.3.2',
+    version = '2.3.3',
     description = 'a library for MurmurHash3, a set of fast and robust hash functions',
     license = 'Public Domain',
     author = 'V G',

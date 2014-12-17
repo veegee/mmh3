@@ -1,7 +1,7 @@
 murmurhash3
 ===========
 
-:Version: 2.3.2
+:Version: 2.3.3
 :Download: http://pypi.python.org/pypi/murmurhash3/
 :Source: http://github.com/veegee/mmh3
 :Keywords: hash, MurmurHash
@@ -34,12 +34,6 @@ Usage::
     'aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~'
     >>> mmh3.hash('foo', 42)  # uses 42 for its seed
     -1322301282
-
-``hash64``, ``hash128``, and ``hash_bytes`` have the third argument for
-architecture optimization. Use True for x64 and False for x86 (default: True).::
-
-    >>> mmh3.hash64('foo', 42, True)
-    (-840311307571801102, -6739155424061121879)
 
 
 License
