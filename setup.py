@@ -2,7 +2,7 @@ from distutils.core import setup, Extension
 
 
 mmh3module = Extension('mmh3', sources = ['mmh3module.c', 'murmur_hash_3.c'],
-                       extra_compile_args=['-std=c99'])
+                       extra_compile_args=['-std=c11'])
 
 classifiers = [
     'Development Status :: 5 - Production/Stable',

@@ -1,9 +1,3 @@
-/* Note - The x86 and x64 versions do _not_ produce the same results, as the
- * algorithms are optimized for their respective platforms. You can still
- * compile and run any of them on any platform, but your performance with the
- * non-native version will be less than optimal.
- */
-
 #include "murmur_hash_3.h"
 
 #if defined(_MSC_VER)
@@ -14,7 +8,7 @@
 #define ROTL64(x,y) _rotl64(x,y)
 #define BIG_CONSTANT(x) (x)
 
-#else
+#else // defined(_MSC_VER)
 
 #if defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && GNUC_MINOR >= 4))
 // gcc version >= 4.4 4.1 = RHEL 5, 4.4 = RHEL 6. Don't inline for RHEL 5 gcc which is 4.1
@@ -190,7 +184,7 @@ void MurmurHash3_x64_128(const void *key, const int len,
     case 11:
         k2 ^= ((uint64_t)tail[10]) << 16;
     case 10:
-        k2 ^= ((uint64_t)tail[ 9]) << 8;
+        k2 ^= ((uint64_t)tail[9]) << 8;
     case    9:
         k2 ^= ((uint64_t)tail[ 8]) << 0;
         k2 *= c2;
@@ -198,21 +192,21 @@ void MurmurHash3_x64_128(const void *key, const int len,
         k2 *= c1;
         h2 ^= k2;
     case 8:
-        k1 ^= ((uint64_t)tail[ 7]) << 56;
+        k1 ^= ((uint64_t)tail[7]) << 56;
     case 7:
-        k1 ^= ((uint64_t)tail[ 6]) << 48;
+        k1 ^= ((uint64_t)tail[6]) << 48;
     case 6:
-        k1 ^= ((uint64_t)tail[ 5]) << 40;
+        k1 ^= ((uint64_t)tail[5]) << 40;
     case 5:
-        k1 ^= ((uint64_t)tail[ 4]) << 32;
+        k1 ^= ((uint64_t)tail[4]) << 32;
     case 4:
-        k1 ^= ((uint64_t)tail[ 3]) << 24;
+        k1 ^= ((uint64_t)tail[3]) << 24;
     case 3:
-        k1 ^= ((uint64_t)tail[ 2]) << 16;
+        k1 ^= ((uint64_t)tail[2]) << 16;
     case 2:
-        k1 ^= ((uint64_t)tail[ 1]) << 8;
+        k1 ^= ((uint64_t)tail[1]) << 8;
     case 1:
-        k1 ^= ((uint64_t)tail[ 0]) << 0;
+        k1 ^= ((uint64_t)tail[0]) << 0;
         k1 *= c1;
         k1 = ROTL64(k1, 31);
         k1 *= c2;
