@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <Python.h>
-#include "murmur_hash_3.h"
+#include "murmur_hash_3.hpp"
 
 #if defined(_MSC_VER)
 // Visual C++
@@ -22,7 +22,7 @@ mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds) {
     uint32_t seed = 0;
     int32_t result[1];
 
-    static char *kwlist[] = {"key", "seed", NULL};
+    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|i", kwlist,
                                      &target_str, &target_str_len, &seed)) {
@@ -46,7 +46,7 @@ mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds) {
     const char *format = "ll";
     #endif
 
-    static char *kwlist[] = {"key", "seed", NULL};
+    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|i", kwlist,
                                      &target_str, &target_str_len, &seed)) {
@@ -66,7 +66,7 @@ mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds) {
     uint32_t seed = 0;
     uint64_t result[2];
 
-    static char *kwlist[] = {"key", "seed", NULL};
+    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|i", kwlist,
                                      &target_str, &target_str_len, &seed)) {
@@ -86,7 +86,7 @@ mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds) {
     uint32_t seed = 0;
     uint32_t result[4];
 
-    static char *kwlist[] = {"key", "seed", NULL};
+    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|i", kwlist,
                                      &target_str, &target_str_len, &seed)) {

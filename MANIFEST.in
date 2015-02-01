@@ -1,5 +1,5 @@
-include *.c
-include *.h
+include *.cpp
+include *.hpp
 include README.rst
 include setup.py
 include MANIFEST.in

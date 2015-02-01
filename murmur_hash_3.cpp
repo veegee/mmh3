@@ -1,4 +1,4 @@
-#include "murmur_hash_3.h"
+#include "murmur_hash_3.hpp"
 
 #if defined(_MSC_VER)
 
