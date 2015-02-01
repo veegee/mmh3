@@ -1,7 +1,7 @@
 murmurhash3
 ===========
 
-:Version: 2.3.3
+:Version: 2.3.4
 :Download: http://pypi.python.org/pypi/murmurhash3/
 :Source: http://github.com/veegee/mmh3
 :Keywords: hash, MurmurHash
