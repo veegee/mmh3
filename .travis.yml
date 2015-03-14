@@ -7,13 +7,13 @@ python:
   - "pypy3"
 
 before_install:
+  - sudo apt-get -qq update
   - sudo apt-get install -qq build-essential
 
 install:
   - pip install -r requirements.txt
 
 script:
-  - cd tests
   - py.test
 
 notifications:
