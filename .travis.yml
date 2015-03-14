@@ -1,0 +1,17 @@
+language: python
+
+python:
+  - "3.4"
+  - "3.3"
+  - "3.2"
+  - "pypy3"
+
+before_install:
+  - sudo apt-get install -qq build-essential
+
+script:
+  - cd tests
+  - py.test
+
+notifications:
+  email: false
