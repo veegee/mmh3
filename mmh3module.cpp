@@ -104,7 +104,12 @@ struct module_state {
     PyObject *error;
 };
 
+#if PY_MAJOR_VERSION >= 3
 #define GETSTATE(m) ((struct module_state*)PyModule_GetState(m))
+#else
+#define GETSTATE(m) (&_state)
+static struct module_state _state;
+#endif
 
 static PyMethodDef Mmh3Methods[] = {
     {
@@ -140,6 +145,7 @@ static int mmh3_clear(PyObject *m) {
     return 0;
 }
 
+#if PY_MAJOR_VERSION >= 3
 static struct PyModuleDef mmh3module = {
     PyModuleDef_HEAD_INIT,
     "mmh3",
@@ -152,10 +158,8 @@ static struct PyModuleDef mmh3module = {
     NULL
 };
 
-PyMODINIT_FUNC
-PyInit_mmh3(void) {
+PyMODINIT_FUNC PyInit_mmh3(void) {
     PyObject *module = PyModule_Create(&mmh3module);
-
     if (module == NULL)
         return NULL;
 
@@ -171,3 +175,12 @@ PyInit_mmh3(void) {
 
     return module;
 }
+#else
+PyMODINIT_FUNC initmmh3(void) {
+    PyObject *module = Py_InitModule3(
+        "mmh3",
+        Mmh3Methods,
+        "mmh3 is a Python frontend to MurmurHash3, a fast and robust hash library.\n"
+    );
+}
+#endif
