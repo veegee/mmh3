@@ -3,7 +3,7 @@
 #include <Python.h>
 #include "murmur_hash_3.hpp"
 
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) && _MSC_VER < 1600
 // Visual C++
 typedef signed char int8_t;
 typedef signed long int32_t;
